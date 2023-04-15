@@ -17,10 +17,10 @@ import java.util.Map;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class StatsClient {
-    final String url = "http://stats-server:9090";
-    final RestTemplate restTemplate;
+    String url = "http://stats-server:9090";
+    RestTemplate restTemplate;
 
     public EndpointHitAPIDto saveEndpointHit(EndpointHitAPIDto endpointHitAPIDto) {
         HttpHeaders headers = restTemplate.headForHeaders(url);

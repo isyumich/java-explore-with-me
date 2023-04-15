@@ -19,10 +19,10 @@ import java.util.List;
 
 @RestController
 @Slf4j
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class StatsController {
 
-    final StatsService statsService;
+    StatsService statsService;
 
     @Autowired
     public StatsController(@Qualifier("StatsServiceDb") StatsService statsService) {
@@ -44,8 +44,6 @@ public class StatsController {
                                           @RequestParam(required = false) List<String> uris,
                                           @RequestParam(required = false, defaultValue = "false") Boolean unique) {
         log.info("Поступил запрос на получение статистики");
-        System.out.println(statsService.getStats(start, end, uris, unique).get(0));
-        System.out.println("Проверка");
         return statsService.getStats(start, end, uris, unique);
     }
 }
