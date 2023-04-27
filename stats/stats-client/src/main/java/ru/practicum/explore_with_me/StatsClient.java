@@ -1,55 +1,49 @@
 package ru.practicum.explore_with_me;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.DefaultUriBuilderFactory;
 
-import java.util.Arrays;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
-@Slf4j
 @Service
-@RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class StatsClient {
-    String url = "http://stats-server:9090";
-    RestTemplate restTemplate;
-
-    public EndpointHitAPIDto saveEndpointHit(EndpointHitAPIDto endpointHitAPIDto) {
-        HttpHeaders headers = restTemplate.headForHeaders(url);
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        HttpEntity<EndpointHitAPIDto> request = new HttpEntity<>(endpointHitAPIDto, headers);
-        restTemplate.exchange(url + "/hit", HttpMethod.POST, request, EndpointHitAPIDto.class);
-        return endpointHitAPIDto;
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class StatsClient extends BaseClient {
+    @Autowired
+    public StatsClient(@Value("${stats-server.url}") String serverUrl, RestTemplateBuilder builder) {
+        super(builder
+                .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl))
+                .requestFactory(HttpComponentsClientHttpRequestFactory::new)
+                .build()
+        );
     }
 
-    public List<ViewStatsAPIDto> getStats(String start, String end, List<String> uris, Boolean unique) {
+    public void saveEndpointHit(String appName, String uri, String ip, LocalDateTime timestamp) {
+        EndpointHitAPIDto endpointHitAPIDto = EndpointHitAPIDto.builder()
+                .app(appName)
+                .uri(uri)
+                .ip(ip)
+                .timestamp(timestamp.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .build();
+        post("/hit", endpointHitAPIDto);
+    }
 
+    public ResponseEntity<Object> getStats(String start, String end, List<String> uris, Boolean unique) {
+        String path = "/stats?start={start}&end={end}&uris={uris}&unique={unique}";
         Map<String, Object> parameters = Map.of(
                 "start", start,
                 "end", end,
                 "uris", uris,
                 "unique", unique);
-
-        ResponseEntity<String> response = restTemplate.getForEntity(
-                url + "/stats?start={start}&end={end}&uris={uris}&unique={unique}",
-                String.class,
-                parameters);
-
-        List<ViewStatsAPIDto> statsDtoList;
-        try {
-            statsDtoList = Arrays.asList(new ObjectMapper().readValue(response.getBody(), ViewStatsAPIDto[].class));
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        return statsDtoList;
+        return get(path, parameters);
     }
 }
