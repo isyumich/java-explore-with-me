@@ -19,9 +19,9 @@ import java.util.List;
 @RequestMapping("/admin/users")
 @Validated
 @Slf4j
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AdminUserController {
-    final UserService userService;
+    UserService userService;
 
     @Autowired
     public AdminUserController(@Qualifier("UserServiceDb") UserService userService) {

@@ -18,10 +18,11 @@ import javax.validation.Valid;
 @RequestMapping("/admin/categories")
 @Validated
 @Slf4j
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AdminCategoryController {
-    final String pathForCatId = "/{catId}";
-    final CategoryService categoryService;
+    String pathForCatId = "/{catId}";
+    String pathVarCatId = "catId";
+    CategoryService categoryService;
 
     @Autowired
     public AdminCategoryController(@Qualifier("CategoryServiceDb") CategoryService categoryService) {
@@ -37,14 +38,14 @@ public class AdminCategoryController {
 
     @PatchMapping(pathForCatId)
     public OutputCategoryDto updateCategory(@Valid @RequestBody InputCategoryDto inputCategoryDto,
-                                            @PathVariable(name = "catId") Long catId) {
+                                            @PathVariable(name = pathVarCatId) Long catId) {
         log.info(String.format("%s %d", "Запрос на изменение категории с id =", catId));
         return categoryService.updateCategory(inputCategoryDto, catId);
     }
 
     @DeleteMapping(pathForCatId)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCategory(@PathVariable(name = "catId") Long catId) {
+    public void deleteCategory(@PathVariable(name = pathVarCatId) Long catId) {
         log.info(String.format("%s %d", "Запрос на удаление категории с id =", catId));
         categoryService.deleteCategory(catId);
     }

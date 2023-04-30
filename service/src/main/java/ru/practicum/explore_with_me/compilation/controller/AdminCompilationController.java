@@ -18,10 +18,11 @@ import javax.validation.Valid;
 @RequestMapping("/admin/compilations")
 @Validated
 @Slf4j
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AdminCompilationController {
-    final String pathForCompId = "/{compId}";
-    final CompilationService compilationService;
+    String pathForCompId = "/{compId}";
+    String pathVarCompId = "compId";
+    CompilationService compilationService;
 
     @Autowired
     public AdminCompilationController(@Qualifier("CompilationServiceDb") CompilationService compilationService) {
@@ -37,14 +38,14 @@ public class AdminCompilationController {
 
     @PatchMapping(pathForCompId)
     public OutputCompilationDto updateCompilation(@RequestBody InputCompilationDto inputCompilationDto,
-                                                  @PathVariable(name = "compId") Long compId) {
+                                                  @PathVariable(name = pathVarCompId) Long compId) {
         log.info(String.format("%s %d", "Запрос на изменение подборки с id =", compId));
         return compilationService.updateCompilation(inputCompilationDto, compId);
     }
 
     @DeleteMapping(pathForCompId)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCompilation(@PathVariable(name = "compId") Long compId) {
+    public void deleteCompilation(@PathVariable(name = pathVarCompId) Long compId) {
         log.info(String.format("%s %d", "Запрос на удаление подборки с id =", compId));
         compilationService.deleteCompilation(compId);
     }

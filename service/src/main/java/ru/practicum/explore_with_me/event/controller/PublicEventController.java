@@ -16,9 +16,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/events")
 @Slf4j
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PublicEventController {
-    final EventService eventService;
+    EventService eventService;
 
     @Autowired
     public PublicEventController(@Qualifier("EventServiceDb") EventService eventService) {

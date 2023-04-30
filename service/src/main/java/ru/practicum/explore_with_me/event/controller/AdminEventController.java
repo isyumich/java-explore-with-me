@@ -16,10 +16,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin/events")
 @Slf4j
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AdminEventController {
 
-    final EventService eventService;
+    EventService eventService;
 
     @Autowired
     public AdminEventController(@Qualifier("EventServiceDb") EventService eventService) {

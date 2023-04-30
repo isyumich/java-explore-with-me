@@ -24,10 +24,10 @@ import java.util.List;
 @Transactional
 @Qualifier("CompilationServiceDb")
 @Slf4j
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CompilationServiceDb implements CompilationService {
-    final CompilationRepository compilationRepository;
-    final EventRepository eventRepository;
+    CompilationRepository compilationRepository;
+    EventRepository eventRepository;
 
 
     @Autowired
@@ -37,7 +37,6 @@ public class CompilationServiceDb implements CompilationService {
         this.eventRepository = eventRepository;
     }
 
-    @Transactional
     @Override
     public OutputCompilationDto saveCompilation(InputCompilationDto inputCompilationDto) {
         Compilation compilation = compilationRepository.save(CompilationDtoMapper.inputToModelMapper(inputCompilationDto));
@@ -47,7 +46,6 @@ public class CompilationServiceDb implements CompilationService {
         return modelToOutputDto(compilation, inputCompilationDto);
     }
 
-    @Transactional
     @Override
     public OutputCompilationDto updateCompilation(InputCompilationDto inputCompilationDto, Long compId) {
         Compilation compilation = getCompilationModel(compId);

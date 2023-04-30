@@ -21,12 +21,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/users/{userId}/events")
 @Slf4j
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PrivateEventController {
-    final String pathForEventId = "/{eventId}";
-    final String pathForRequests = "/requests";
-    final EventService eventService;
-    final RequestService requestService;
+    String pathForEventId = "/{eventId}";
+    String pathForRequests = "/requests";
+    String pathVarUserId = "userId";
+    String pathVarEventId = "eventId";
+    EventService eventService;
+    RequestService requestService;
 
     @Autowired
     public PrivateEventController(@Qualifier("EventServiceDb") EventService eventService,
@@ -38,29 +40,29 @@ public class PrivateEventController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public OutputEventDto addEvent(@Valid @RequestBody InputEventDto inputEventDto,
-                                   @PathVariable(name = "userId") Long userId) {
+                                   @PathVariable(name = pathVarUserId) Long userId) {
         log.info("Запрос на создание нового события");
         return eventService.addEvent(inputEventDto, userId);
     }
 
     @PatchMapping(pathForEventId)
     public OutputEventDto updateEvent(@RequestBody InputEventDto inputEventDto,
-                                      @PathVariable(name = "userId") Long userId,
-                                      @PathVariable(name = "eventId") Long eventId) {
+                                      @PathVariable(name = pathVarUserId) Long userId,
+                                      @PathVariable(name = pathVarEventId) Long eventId) {
         log.info("Запрос на изменение события");
         return eventService.updateEvent(inputEventDto, userId, eventId);
     }
 
     @PatchMapping(pathForEventId + pathForRequests)
     public RequestStatusUpdateResult changeRequestStatus(@RequestBody InputRequestsStatusDto inputRequestsStatusDto,
-                                                         @PathVariable(name = "userId") Long userId,
-                                                         @PathVariable(name = "eventId") Long eventId) {
+                                                         @PathVariable(name = pathVarUserId) Long userId,
+                                                         @PathVariable(name = pathVarEventId) Long eventId) {
         log.info("Запрос на изменения статуса события");
         return requestService.changeRequestStatus(inputRequestsStatusDto, userId, eventId);
     }
 
     @GetMapping
-    List<OutputEventDto> getEvents(@PathVariable(name = "userId") Long userId,
+    List<OutputEventDto> getEvents(@PathVariable(name = pathVarUserId) Long userId,
                                    @RequestParam(name = "from", required = false, defaultValue = "0") Integer from,
                                    @RequestParam(name = "size", required = false, defaultValue = "10") Integer size) {
         log.info("Запрос на получение событий пользователя");
@@ -68,8 +70,8 @@ public class PrivateEventController {
     }
 
     @GetMapping(pathForEventId)
-    OutputEventDto getEvent(@PathVariable(name = "userId") Long userId,
-                            @PathVariable(name = "eventId") Long eventId) {
+    OutputEventDto getEvent(@PathVariable(name = pathVarUserId) Long userId,
+                            @PathVariable(name = pathVarEventId) Long eventId) {
         log.info("Запрос на получение события по id");
         return eventService.getEvent(userId, eventId);
     }
