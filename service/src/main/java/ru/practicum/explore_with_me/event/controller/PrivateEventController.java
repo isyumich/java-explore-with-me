@@ -21,14 +21,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/users/{userId}/events")
 @Slf4j
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class PrivateEventController {
-    String pathForEventId = "/{eventId}";
-    String pathForRequests = "/requests";
-    String pathVarUserId = "userId";
-    String pathVarEventId = "eventId";
-    EventService eventService;
-    RequestService requestService;
+    final String pathForEventId = "/{eventId}";
+    final String pathForRequests = "/requests";
+    final String pathVarUserId = "userId";
+    final String pathVarEventId = "eventId";
+    final EventService eventService;
+    final RequestService requestService;
 
     @Autowired
     public PrivateEventController(@Qualifier("EventServiceDb") EventService eventService,

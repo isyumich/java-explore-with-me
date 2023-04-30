@@ -18,11 +18,11 @@ import javax.validation.Valid;
 @RequestMapping("/admin/compilations")
 @Validated
 @Slf4j
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class AdminCompilationController {
-    String pathForCompId = "/{compId}";
-    String pathVarCompId = "compId";
-    CompilationService compilationService;
+    final String pathForCompId = "/{compId}";
+    final String pathVarCompId = "compId";
+    final CompilationService compilationService;
 
     @Autowired
     public AdminCompilationController(@Qualifier("CompilationServiceDb") CompilationService compilationService) {

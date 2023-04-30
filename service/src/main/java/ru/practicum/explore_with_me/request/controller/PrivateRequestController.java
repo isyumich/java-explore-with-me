@@ -15,10 +15,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/users/{userId}/requests")
 @Slf4j
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class PrivateRequestController {
-    String pathVarUserId = "userId";
-    RequestService requestService;
+    final String pathVarUserId = "userId";
+    final RequestService requestService;
 
     @Autowired
     public PrivateRequestController(@Qualifier("RequestServiceDb") RequestService requestService) {

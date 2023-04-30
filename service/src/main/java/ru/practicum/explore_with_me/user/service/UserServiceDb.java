@@ -22,9 +22,9 @@ import java.util.List;
 @Service
 @Qualifier("UserServiceDb")
 @Slf4j
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserServiceDb implements UserService {
-    UserRepository userRepository;
+    final UserRepository userRepository;
 
     @Autowired
     public UserServiceDb(UserRepository userRepository) {

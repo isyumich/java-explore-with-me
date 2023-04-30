@@ -37,14 +37,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Qualifier("EventServiceDb")
 @Slf4j
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class EventServiceDb implements EventService {
-    StatsClient statsClient;
-    EventRepository eventRepository;
-    CategoryRepository categoryRepository;
-    UserRepository userRepository;
-    LocationRepository locationRepository;
-    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    final StatsClient statsClient;
+    final EventRepository eventRepository;
+    final CategoryRepository categoryRepository;
+    final UserRepository userRepository;
+    final LocationRepository locationRepository;
+    final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Override//private
     public OutputEventDto addEvent(InputEventDto inputEventDto, Long userId) {

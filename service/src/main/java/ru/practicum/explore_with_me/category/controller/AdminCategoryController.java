@@ -18,11 +18,11 @@ import javax.validation.Valid;
 @RequestMapping("/admin/categories")
 @Validated
 @Slf4j
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class AdminCategoryController {
-    String pathForCatId = "/{catId}";
-    String pathVarCatId = "catId";
-    CategoryService categoryService;
+    final String pathForCatId = "/{catId}";
+    final String pathVarCatId = "catId";
+    final CategoryService categoryService;
 
     @Autowired
     public AdminCategoryController(@Qualifier("CategoryServiceDb") CategoryService categoryService) {

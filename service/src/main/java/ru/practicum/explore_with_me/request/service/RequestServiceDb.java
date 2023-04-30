@@ -30,12 +30,12 @@ import java.util.List;
 @Service
 @Qualifier("RequestServiceDb")
 @Slf4j
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class RequestServiceDb implements RequestService {
 
-    RequestRepository requestRepository;
-    UserRepository userRepository;
-    EventRepository eventRepository;
+    final RequestRepository requestRepository;
+    final UserRepository userRepository;
+    final EventRepository eventRepository;
 
 
     @Autowired

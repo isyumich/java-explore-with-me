@@ -14,9 +14,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/categories")
 @Slf4j
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class PublicCategoryController {
-    CategoryService categoryService;
+    final CategoryService categoryService;
 
     @Autowired
     public PublicCategoryController(@Qualifier("CategoryServiceDb") CategoryService categoryService) {

@@ -14,9 +14,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/compilations")
 @Slf4j
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class PublicCompilationController {
-    CompilationService compilationService;
+    final CompilationService compilationService;
 
     @Autowired
     public PublicCompilationController(@Qualifier("CompilationServiceDb") CompilationService compilationService) {
