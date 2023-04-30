@@ -22,11 +22,11 @@ import java.util.List;
 @Service
 @Qualifier("CategoryServiceDb")
 @Slf4j
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CategoryServiceDb implements CategoryService {
 
-    final CategoryRepository categoryRepository;
-    final EventRepository eventRepository;
+    CategoryRepository categoryRepository;
+    EventRepository eventRepository;
 
 
     @Autowired

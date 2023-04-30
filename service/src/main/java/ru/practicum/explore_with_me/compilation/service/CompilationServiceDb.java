@@ -24,10 +24,10 @@ import java.util.List;
 @Transactional
 @Qualifier("CompilationServiceDb")
 @Slf4j
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CompilationServiceDb implements CompilationService {
-    final CompilationRepository compilationRepository;
-    final EventRepository eventRepository;
+    CompilationRepository compilationRepository;
+    EventRepository eventRepository;
 
 
     @Autowired
