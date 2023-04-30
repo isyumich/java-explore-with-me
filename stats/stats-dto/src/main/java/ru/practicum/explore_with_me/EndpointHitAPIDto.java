@@ -1,22 +1,21 @@
 package ru.practicum.explore_with_me;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import javax.validation.constraints.NotBlank;
-
-@Data
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@Getter
+@Setter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class EndpointHitAPIDto {
-    @NotBlank
+    //@NotBlank
     String app;
-    @NotBlank
+    // @NotBlank
     String uri;
-    @NotBlank
+    //@NotBlank
     String ip;
-    @NotBlank
+    // @NotBlank
     String timestamp;
 }

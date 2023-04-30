@@ -31,16 +31,14 @@ public class StatsController {
 
     @PostMapping("/hit")
     @ResponseStatus(HttpStatus.CREATED)
-    public EndpointHitOutDto saveHit(@RequestBody @Valid EndpointHitAPIDto endpointHitAPIDto) {
+    public EndpointHitOutDto saveEndpointHit(@RequestBody @Valid EndpointHitAPIDto endpointHitAPIDto) {
         log.info("Поступил запрос на сохранение запроса");
         return statsService.saveEndpointHit(endpointHitAPIDto);
     }
 
     @GetMapping("/stats")
-    public List<ViewStatsOutDto> getStats(@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-                                          @RequestParam(value = "start") LocalDateTime start,
-                                          @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-                                          @RequestParam(value = "end") LocalDateTime end,
+    public List<ViewStatsOutDto> getStats(@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") @RequestParam(value = "start") LocalDateTime start,
+                                          @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") @RequestParam(value = "end") LocalDateTime end,
                                           @RequestParam(required = false) List<String> uris,
                                           @RequestParam(required = false, defaultValue = "false") Boolean unique) {
         log.info("Поступил запрос на получение статистики");
