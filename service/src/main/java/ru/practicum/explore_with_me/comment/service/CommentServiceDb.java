@@ -45,7 +45,7 @@ public class CommentServiceDb implements CommentService {
 
     @Override
     public List<OutputCommentDto> getAllComments(Integer from, Integer size) {
-        return FromModelListToOutDtoList(commentRepository.findAllComments(PageRequest.of(from / size, size)));
+        return fromModelListToOutDtoList(commentRepository.findAllComments(PageRequest.of(from / size, size)));
     }
 
 
@@ -86,14 +86,14 @@ public class CommentServiceDb implements CommentService {
     @Override
     public List<OutputCommentDto> getOwnComments(Long userId) {
         User author = getUser(userId);
-        return FromModelListToOutDtoList(commentRepository.findCommentsByAuthor(author));
+        return fromModelListToOutDtoList(commentRepository.findCommentsByAuthor(author));
     }
 
     /*public*/
     @Override
     public List<OutputCommentDto> getCommentsByEventId(Long eventId, Integer from, Integer size) {
         Event event = getEvent(eventId);
-        return FromModelListToOutDtoList(commentRepository.findCommentsByEvent(event, PageRequest.of(from / size, size)));
+        return fromModelListToOutDtoList(commentRepository.findCommentsByEvent(event, PageRequest.of(from / size, size)));
     }
 
     @Override
@@ -129,7 +129,7 @@ public class CommentServiceDb implements CommentService {
         return commentRepository.findById(commentId).get();
     }
 
-    private List<OutputCommentDto> FromModelListToOutDtoList(List<Comment> comments) {
+    private List<OutputCommentDto> fromModelListToOutDtoList(List<Comment> comments) {
         List<OutputCommentDto> outputCommentDtoList = new ArrayList<>();
         for (Comment comment : comments) {
             outputCommentDtoList.add(CommentDtoMapper.modelToOutputMapper(comment));
