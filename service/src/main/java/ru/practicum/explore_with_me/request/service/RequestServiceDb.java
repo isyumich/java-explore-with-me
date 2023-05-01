@@ -56,7 +56,7 @@ public class RequestServiceDb implements RequestService {
             log.info(message);
             throw new ConflictException(message);
         }
-        if (event.getParticipantLimit() == null || event.getParticipantLimit() <= eventRepository.getCountConfirmedRequests(eventId)) {
+        if (event.getParticipantLimit() <= eventRepository.getCountConfirmedRequests(eventId)) {
             String message = "Превышено допустимое количество участников";
             log.info(message);
             throw new ConflictException(message);
@@ -103,7 +103,7 @@ public class RequestServiceDb implements RequestService {
     @Override
     public RequestStatusUpdateResult changeRequestStatus(InputRequestsStatusDto inputRequestsStatusDto, Long userId, Long eventId) {
         Event event = getEvent(eventId);
-        if (event.getParticipantLimit() == null || event.getParticipantLimit() <= eventRepository.getCountConfirmedRequests(eventId)) {
+        if (event.getParticipantLimit() <= eventRepository.getCountConfirmedRequests(eventId)) {
             String message = "Превышено допустимое количество участников";
             log.info(message);
             throw new ConflictException(message);
